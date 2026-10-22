@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortcuts — Atalhos do Windows</title>
+    
+    <!-- Configurações PWA e SEO -->
+    <meta name="description" content="Guia completo e interativo de atalhos de teclado do Windows com suporte offline e treinos práticos.">
+    <meta name="theme-color" content="#561010">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23561010'/><path d='M25 35 L45 35 L45 55 L25 55 Z M50 35 L75 35 L75 55 L50 55 Z M25 60 L45 60 L45 80 L25 80 Z M50 60 L75 60 L75 80 L50 80 Z' fill='%23ffffff'/></svg>">
+    
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="logo-container">
+            <svg class="app-logo" viewBox="0 0 100 100" aria-label="Shortcuts Logo">
+                <rect width="100" height="100" rx="22" fill="#561010"/>
+                <path d="M22 32 L46 32 L46 54 L22 54 Z M51 32 L78 32 L78 54 L51 54 Z M22 58 L46 58 L46 80 L22 80 Z M51 58 L78 58 L78 80 L51 80 Z" fill="#ffffff"/>
+            </svg>
+            <div class="brand">
+                <h1>Shortcuts</h1>
+                <span class="tagline">Guia Prático do Windows</span>
+            </div>
+        </div>
+
+        <div class="nav-actions">
+            <button id="themeToggle" class="icon-btn" title="Alternar Modo Claro/Escuro" aria-label="Alternar Tema">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+            <button id="installPwaBtn" class="btn btn-outline hidden">
+                <i class="fa-solid fa-download"></i> Instalar App
+            </button>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="container">
+
+        <!-- Barra de Busca e Filtros -->
+        <section class="search-section">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Busque por atalho, tecla (ex: Win, Ctrl) ou função..." autocomplete="off">
+                <button id="clearSearchBtn" class="clear-btn hidden" aria-label="Limpar Busca">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Chips de Filtro por Categoria -->
+            <div class="categories-scroll">
+                <div class="category-chips" id="categoryChips">
+                    <button class="chip active" data-category="all">
+                        <i class="fa-solid fa-layer-group"></i> Todos
+                    </button>
+                    <button class="chip" data-category="favorites">
+                        <i class="fa-solid fa-star"></i> Favoritos (<span id="favCount">0</span>)
+                    </button>
+                    <button class="chip" data-category="tecla-win">
+                        <i class="fa-brands fa-windows"></i> Tecla Windows
+                    </button>
+                    <button class="chip" data-category="win-avancado">
+                        <i class="fa-solid fa-sliders"></i> Win Avançado
+                    </button>
+                    <button class="chip" data-category="edicao-texto">
+                        <i class="fa-solid fa-font"></i> Edição e Texto
+                    </button>
+                    <button class="chip" data-category="explorador">
+                        <i class="fa-solid fa-folder-open"></i> Explorador
+                    </button>
+                    <button class="chip chip-quiz" data-category="quiz">
+                        <i class="fa-solid fa-gamepad"></i> Treino Interativo
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contador de Resultados -->
+        <div class="results-info">
+            <span id="resultsCount">Exibindo todos os atalhos</span>
+        </div>
+
+        <!-- Lista de Atalhos -->
+        <section id="shortcutsGrid" class="shortcuts-grid">
+            <!-- Renderizado Dinamicamente via JavaScript -->
+        </section>
+
+        <!-- Modo Quiz Interativo -->
+        <section id="quizSection" class="quiz-container hidden">
+            <div class="quiz-card">
+                <div class="quiz-header">
+                    <h2><i class="fa-solid fa-graduation-cap"></i> Desafio de Atalhos</h2>
+                    <span id="quizScore" class="quiz-score">Pontos: 0</span>
+                </div>
+                
+                <p class="quiz-instruction">Qual é a combinação de teclas para a seguinte ação?</p>
+                <div id="quizQuestion" class="quiz-question-box">
+                    "Carregando pergunta..."
+                </div>
+
+                <div id="quizOptions" class="quiz-options">
+                    <!-- Opções geradas via JS -->
+                </div>
+
+                <div id="quizFeedback" class="quiz-feedback hidden"></div>
+
+                <div class="quiz-actions">
+                    <button id="nextQuizBtn" class="btn btn-primary hidden">Próxima Pergunta <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estado Vazio (Nenhum resultado encontrado) -->
+        <div id="emptyState" class="empty-state hidden">
+            <i class="fa-regular fa-face-frown empty-icon"></i>
+            <h3>Nenhum atalho encontrado</h3>
+            <p>Tente buscar por termos diferentes ou selecione outra categoria.</p>
+        </div>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <p>Shortcuts PWA &bull; Referência completa de atalhos do Windows</p>
+    </footer>
+
+    <!-- Toast Notification (Copiado / Alertas) -->
+    <div id="toast" class="toast hidden">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMessage">Atalho copiado!</span>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Registrar Service Worker para suporte PWA e offline
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registrado:', reg.scope))
+                    .catch(err => console.error('Erro no SW:', err));
+            });
+        }
+    </script>
+</body>
+</html>
